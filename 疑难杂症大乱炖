@@ -1,0 +1,38 @@
+### list中list的基本操作
+>>> grades = [[10,25,13,45],[205],[70,76,49,100]]
+>>> print(grades[0])
+$ [10,25,13,45]
+>>> print(grades[2][1])
+$ 76
+>>> grades[1].append(70)
+>>> print(grades)
+$ [[10,25,13,45],[205,70],[70,76,49,100]]
+>>> for inner_list in grades:
+         print(inner_list)
+### each time one of the list is printed
+$ [10,25,13,45]
+$ [205,70]
+$ [70,76,49,100]
+>>> for inner_list in grades:
+>>>    for grade in inner_list:
+>>>        print(grade, end=" ")
+$ 10 25 13 45 205 70 70 76 49 100           
+### 上述代码也可写成
+>>> for i in range(len(grades)):
+>>>    for j in range(len(grades[i])):
+>>>        print(grades[I][j], end=" ")
+### 在这两个loop下多打一行print()可将他们分成数行
+
+### 将list中的str字符全都转换成int及其map的用法
+>>> ls = ['1','2','3','4','5']
+>>> li = list(map(int,ls))
+>>> print(li)
+$ [1,2,3,4,5]
+### 方法二
+>>> li = [int(i) for I in ls]
+### 方法三 - 循环
+>>> new_list = []
+>>> for n in ls:
+>>>    new_list.append(int(n))
+### 方法四 - 不太懂
+>>> for I, v in enumerate(ls): ls[i] = int(v)
