@@ -1,0 +1,16 @@
+###
+### create a virtual environment called test_environment###
+
+$ conda create --name test_environment python=3.8 flask sqlalchemy
+$ source activate test_environment
+$ python
+>>> exit()
+$ source deactivate 
+
+### list all created environment
+$ conda env list
+### remove created environment
+$ conda remove --name test_environment --all
+
+
+ 
