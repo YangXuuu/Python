@@ -13,5 +13,5 @@ $ conda env list
 $ conda remove --name test_environment --all
 ### install matplotlib package (need to use tsinghua mirror)
 $ pip install matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple;2/
-
- 
+### 查看matplotlib的安装
+$ pip list | grep matplotlib
