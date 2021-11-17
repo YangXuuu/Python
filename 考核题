@@ -1,0 +1,39 @@
+### 1 ###
+计算0-9所有偶数平方
+squares = []
+for x in range(10):
+    if x%2 == 0:
+        squares.append(x**2)
+
+print(squares)
+
+### 使用列表推导式 [返回的元素+for循环+过滤条件]
+squares2 = [x**2 for x in range(10) if x%2==0]
+print(squares2)
+
+
+### 2 ###
+将list1所有值转换成int型，最后的列表为所有元素自身平方的值，并且去除该元素平方小于10的值。
+list1 = [[4,8,2],[2,'1',6],(3.23,1,1),{'11'}]
+list2 = []
+### 检查下数据类型，可嵌套
+print(type(list1))
+### 生成list [4，8，2，2，‘1’，6，3，23，1，1，‘11’]
+for inner_list in list1:
+    for integer in inner_list:
+        list2.append(integer)
+print(type(list2))
+### 把list2中的string转换成int型
+list3 = list(map(int,list2))
+print(list3)
+### 嵌套检查下
+print(type(list2[4]))
+### 使用推导式 求得结果为[16,64,36,121]
+new_list = [x**2 for x in li if x**2>=10]
+print(new_list)
+
+### 3 ###
+
+
+
+
