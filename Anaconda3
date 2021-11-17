@@ -11,6 +11,7 @@ $ source deactivate
 $ conda env list
 ### remove created environment
 $ conda remove --name test_environment --all
-
+### install matplotlib package (need to use tsinghua mirror)
+$ pip install matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple;2/
 
  
