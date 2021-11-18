@@ -1,0 +1,38 @@
+###
+Ctrl + l 清空屏幕
+
+GENCODE is a consortium that creates data on transcripts and genes.
+右击复制数据路径
+$ mkdir GENCODE
+$ cd GENCODE
+$ wget + 复制的路径 (download as a gzip file - xxx.fa.gz)
+$ gunzip xxx.fa.gz (变成fa文件)
+$ python
+>>> from Bio import SeqIO
+### parse takes two arguments, file + format
+### this step establishes a connection between the file system and python code
+>>> sequences = SeqIO.parse('xxx.fa','fasta')
+>>> for record in sequences:
+        examples = record
+        break 
+### 结果：class 'Bio.SeqRecord.SeqRecord'
+>>> type(example)
+### 将 ID, name, description等信息按列列出
+>>> print(example)
+### 直接输出id，以string形式
+>>> example.id
+>>> CDS = example.seq[60:1041]
+>>> CDS
+>>> print(CDS)
+### 输出翻译后的蛋白质序列
+>>> CDS.translate()
+>>>
+>>>
+>>> quit()
+### 统计个数？
+$ grep ">" xxx.fa | wc
+### 
+>>> L = []
+>>> for record in sequences:
+...     L.append(record)
+>>> len(L)
