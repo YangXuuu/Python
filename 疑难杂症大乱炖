@@ -36,3 +36,22 @@ $ [1,2,3,4,5]
 >>>    new_list.append(int(n))
 ### 方法四 - 不太懂
 >>> for I, v in enumerate(ls): ls[i] = int(v)
+
+###Python使用reduce()函数计算多个集合的并集与交集
+###键是标准库functools中reduce()函数的用法，当然其中的函数intersect和union可以使用lambda表达式进行替换
+>>> from functools import reduce
+>>> def intersect(x,y):
+...    return x&y
+>>> sets = [{1,2,3,4,5},{3,2,5,8}]
+>>> result = reduce(intersect, sets)
+>>> result
+>>> {2,5}
+>>> def union(x,y):
+...    return x|y
+
+### 函数的return语句只能返回一个值，可以是任何类型；因此我们可以返回一个tuple类型，来间接达到返回多个值
+例：x处以y的余数与商的函数
+>>> def F1(x,y):
+...    a=x%y
+...    b=(x-a)/y
+...    return(a,b) 
