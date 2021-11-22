@@ -32,8 +32,14 @@ print(type(list2[4]))
 new_list = [x**2 for x in li if x**2>=10]
 print(new_list)
 
-### 3 ###
-
-
-
+### 4 ###
+>>> from functools import reduce
+>>> def venn_list(x,y):
+...    if type(y)!= list:
+...        print("input is not list")
+...    else:
+...        [[{j} for j in i ] for i in len(range(y))]
+...        a = x&y
+...        b = x|y
+...        return (a,b)
 
