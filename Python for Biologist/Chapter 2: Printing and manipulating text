@@ -1,0 +1,144 @@
+### print special characters （换行问题）
+The reason that the code didn't work is that python got confused about whether the new line was part of the string (which is we wanted) or part of the source code (which is how it was interpreted).
+What we need is a way to include a new line as part of a string.
+To include a new line, we write a backslash followed by the letter n-  Python knows that this is a special charater and will interpret it accordingly.
+This special character is called a newline. Here's the code which prints "Hello world" across two lines:
+>>> print("Hello\nworld")
+Note that there's no need for a space before or after the newline.
+
+There are a few other useful special characters as well, all of which consist of a backslash followed by a letter. 
+The only ones which you are likely to need for the exercises in this book are the tab character (\t) and the carriage return character (\r). 
+The tab character can sometimes be useful when writing a program that will produce a lot of output. 
+The carriage return character works a bit like a newline in that it puts the cursor back to the start of the line, 
+but doesn't actually start a new line, so you can use it to overwrite output – this is sometimes useful for long- running programs.
+
+### Storing strings in varibales
+# store a short DNA sequence in the variable my_dna
+>>> my_dna = "ATCG"
+
+The variable my_dna now points to the string "ATCG". We call this assigning a variable, and once we've done it, we can use the variable name instead of the string itself.
+# now print the DNA sequence
+>>> print(my_dna)
+
+Notice that when we use the variable in a print() statement, we don't need any quotation mark - the quotes are part of the string, so they are already "built in"
+to the variable my_dna. Also notice that this example includes a blank line to separate the different bits and make it easier to read. We are allowed to put as many blank
+lines as we like in our programs when writing python - the computer will ignore them.
+We can change the value of a variable as many times as we like once we've created it:
+>>>my_dna = "ATGCGTA"
+>>>print(my_dna)
+# change the value of my_dna
+>>>my_dna = "TGGTCCA"
+
+We are only allowed to use letters, numbers, and underscores, so we can't have variable names that contain odd characters like £, ^ or %. 
+We are not allowed to start a name with a number (though we can use numbers in the middle or at the end of a name). 
+Finally, we can't use a word that's already built in to the Python language like "print".
+It's also important to remember that variable names are case-sensitive, so my_dna, MY_DNA, My_DNA and My_Dna are all separate variables. 
+Technically this means that you could use all four of those names in a Python program to store different values, 
+but please don't do this – it is very easy to become confused when you use very similar variable names.
+
+# Tools for manipulating strings
+# Concatenation
+We can concatenate (stick together) two strings using the +symbol. This symbol will join together the string on the left with the string on the right:
+>>>my_dna = "AATT" +"GGCC"
+We can also use variables that point to strings:
+>>>upstream = "AAA"
+>>>my_dna = upstream + "ATGC"
+# my_dna is now "AAAATGC"
+We can even join multiple strings together in one go:
+upstream = "AAA"
+downstream = "GGG"
+my_dna = upstream + "ATGC" + downstream
+# my_dna is now "AAAATGCGGG"
+It's important to realize that the result of concatenating two strings together is itself a string. 
+So it's perfectly OK to use a concatenation inside a print() statement:
+>>>print("Hello" + " " + "world")
+
+#Finding the length of a string
+Another useful built-in tool in Python is the len() function (len is short for length). Just like print(), len() takes a single argument 
+(take a quick look back at when we were discussing the print() function for a reminder about what arguments are) which is a string. 
+However, the behaviour of the len() function is quite different. Instead of outputting text to the screen, len() outputs a value that can be stored – we call this the return value. 
+In other words, if we write a program hat uses len() to calculate the length of a string, the program will run but we won't see any output:
+# this line doesn't produce any output
+>len("ATGC")
+If we want to actually use the return value, we need to store it in a variable, and then do something useful with it (like printing it):
+>>>dna_length = len("AGTC")
+>>>print(dna_length)
+There's another interesting thing about the len() function: the result (or return value) is not a string, it's a number. 
+This is a very important idea so I'm going to write it out in bold: Python treats strings and numbers differently.
+We can see that this is the case if we try to concatenate together a number and a string. 
+Consider this short program which calculates the length of a DNA sequence and then prints a message telling us the length:
+
+# store the DNA sequence in a variable
+>>>my_dna = "ATGCGAGT"
+# calculate the length of the sequence and store it in a variable
+>>>dna_length = len(my_dna)
+# print a message telling us the DNA sequence lenth
+>>>print("The length of the DNA sequence is " + dna_length)
+Getting the following error:
+$ python error.py
+Traceback (most recent call last):
+  File "error.py", line 8, in <module>
+    print("The length of the DNA sequence is " + dna_length)
+TypeError: cannot concatenate 'str' and 'int' objects
+
+The error message (line 5) is short but informative: "cannot concatenate 'str' and 'int' objects". 
+Python is complaining that it doesn't know how to concatenate a string (which it calls str for short) and a number (which it calls int – short for integer). 
+Strings and numbers are examples of types – different kinds of information that can exist inside a program. 
+Python has a built-in solution to this type mismatch problem – a function called str() which turns a number1 into a string so that we can print it. 
+Here's how we can modify our program to use it – I've removed tmy_dna = "ATGCGAGT"
+dna_length = len(my_dna)
+print("The length of the DNA sequence is " + str(dna_length))he comments from this version to make it a bit more compact:
+str() is a function which takes one argument (whose type is number), and returns a value (whose type is string) representing that number.
+
+# Changing case
+We can convert a string to lower case by using a new type of syntax – a method that belongs to strings. 
+A method is like a function, but instead of being built in to the Python language, it belongs to a particular type1. 
+The method we are talking about here is called lower(), and we say that it belongs to the string type. Here's how we use it:
+>>>my_dna = "ATGC"
+# print my_dna in lower case
+>>>print(my_dna.lower())
+#Notice how using a method looks different to using a function. When we use a function like print() or len(), 
+we write the function name first and the arguments go in parentheses:
+>>>print("ATGC")
+>>>len(my_dna)
+When we use a method, we write the name of the variable first, followed by a period, then the name of the method, then the method arguments in parentheses. 
+For the example we're looking at here, lower(), there is no argument, so the opening and closing parentheses are right next to each other.
+It's important to notice that the lower() method does not actually change the variable; instead it returns a copy of the variable in lower case. 
+We can prove that it works this way by printing the variable before and after running lower(). Here's the code to do so:
+>>>my_dna = "ATGC"
+# print the variable
+>>>print("before: " + my_dna)
+# run the lower method and store the result
+>>>lowercase_dna = my_dna.lower()
+# print the variable again
+>>>print("after: " + my_dna)
+
+Just like the len() function, in order to actually do anything useful with the lower() method, we need to store the result (or print it right away).
+Because the lower() method belongs to the string type, we can only use it on variables that are strings. If we try to use it on a number:
+>>>my_number = len("AGTC")
+# my_number is 4
+>>>print(my_number.lower())
+We will get an error that looks like this:
+#AttributeError: 'int' object has no attribute 'lower'
+Something that is a number (an int, or integer) does not have a lower() method. 
+
+This is a good example of the importance of types in Python code: we can only use methods on the type that they belong to.
+There is another method that belongs to the string type called upper().
+
+# Replacement
+Here's another example of a useful method that belongs to the string type: replace(). 
+replace() is slightly different from anything we've seen before – it takes two arguments (both strings) and returns a copy of the variable where all occurrences of the first string are replaced by the second string. 
+That's quite a long- winded description, so here are a few examples to make things clearer:
+
+
+
+
+
+
+
+
+
+
+
+
+
