@@ -10,12 +10,107 @@ Hint: you can use normal mathematical symbols like add (+), subtract (-), multip
 Reminder: if you're using Python 2 rather than Python 3, include this line at the top of your program:
 >>>from __future__ import division
 
+$ Solution
+AT content = (A+T)/length
+There are three numbers we need to figure out: the number of As, the number of Ts, and the length of the sequence. We can get the length of the sequence using the len() function, and we can count the number of As and Ts using the count() method. 
+>>>my_dna = "ACTGATCGATTACGTATAGTATTTGCTATCATACATATATATCGATGCGTTCAT"
+>>>length = len(my_dna)
+>>>a_count = my_dna.count('A')
+>>>t_count = my_dna.count('T')
+At this point, it seems sensible to check these lines before we go any further. So rather than diving straight in and doing some calculations, let's print out these numbers so that we can eyeball them and see if they look approximately right. We'll have to remember to turn the numbers into strings using str() so that we can print them:
+>>>print("length: " + str(length))
+>>>print("A count: " + str(a_count))
+>>>print("T count: " + str(t_count))
+Let's take a look at the output from this program:
+$length: 54
+$A count: 16
+$T count: 21
+That looks about right, but how do we know if it's exactly right? We could go through the sequence manually base by base, and verify that there are sixteen As and twenty-one Ts, 
+but that doesn't seem like a great use of our time: also, what would we do if the sequence were 51 kilobases rather than 51 bases? 
+A better idea is to run the exact same code with a much shorter test sequence, to verify that it works before going ahead and running it on the larger sequence.
+Here's a version that uses a very short test sequence with one of each of the four bases:
+>>>test_dna = "ATGC"
+>>>length = len(test_dna)
+>>>a_count = test_dna.count('A')
+>>>t_count = test_dna.count('T')
+>>>print("length: " + str(length))
+>>>print("A count: " + str(a_count))
+>>>print("T count: " + str(t_count))
+
+Everything looks OK – we can probably go ahead and run the code on the long sequence. But wait; we know that the next step is going to involve doing some calculations using the numbers. 
+If we switch back to the long sequence now, then we'll be in the same position as we were before – we'll end up with an answer for the AT content, but we won't know if it's the right one.
+A better plan is to stick with the short test sequence until we've written the whole program, and check that we get the right answer for the AT content (we can easily see by glancing at the test sequence that the AT content is 0.5). 
+Here goes – we'll use the add and divide symbols from the exercise hint:
+
+>>>test_dna = "ATGC"
+>>>length = len(test_dna)
+>>>a_count = test_dna.count('A')
+>>>t_count = test_dna.count('T')
+>>>at_content = (a_count + t_count) / length
+>>>print("AT content is " + str(at_content))
+The output from this program looks like this:
+$AT content is 0.5
+and we can go ahead and run the program using the longer sequence, confident that the code is working and that the calculations are correct. Here's the final version:
+>>>my_dna = "ACTGATCGATTACGTATAGTATTTGCTATCATACATATATATCGATGCGTTCAT"
+>>>length = len(my_dna)
+>>>a_count = my_dna.count('A')
+>>>t_count = my_dna.count('T')
+>>>at_content = (a_count + t_count) / length
+>>>print("AT content is " + str(at_content))
+And the final output:
+$AT content is 0.685185..
+
+
 2.
 Complementing DNA
 Here's a short DNA sequence:
  ACTGATCGATTACGTATAGTATTTGCTATCATACATATATATCGATGCGTTCAT
 Write a program that will print the complement of this sequence.
 
+$ Solution
+We need to take our sequence and replace A with T, T with A,etc. We'll have to make four separate calls to replace(), and use the return value for each on as the input for the next tone.
+>>>my_dna = "ACTGATCGATTACGTATAGTATTTGCTATCATACATATATATCGATGCGTTCAT"
+# replace A with T
+>>>replacement1 = my_dna.replace('A', 'T')
+# replace T with A
+>>>replacement2 = replacement1.replace('T', 'A')
+# replace C with G
+>>>replacement3 = replacement2.replace('C', 'G')
+# replace G with C
+>>>replacement4 = replacement3.replace('G', 'C')
+# print the result of the final replacement
+>>>print(replacement4)
+The problem is: The first replacement (the result of which is shown in the first line of the output) works fine – all the As have been replaced with Ts (for example, look at the first character – it's A in the original sequence and T in the first line of the output).
+The second replacement is where it starts to go wrong: all the Ts are replaced by As, including those that were there as a result of the first replacement. So during the first two replacements, the first character is changed from A to T and then straight back to A again.
+How are we going to get round this problem? One option is to pick a temporary alphabet of four letters and do each replacement twice:
+my_dna = "ACTGATCGATTACGTATAGTATTTGCTATCATACATATATATCGATGCGTTCAT"
+>>>replacement1 = my_dna.replace('A', 'H')
+>>>replacement2 = replacement1.replace('T', 'J')
+>>>replacement3 = replacement2.replace('C', 'K')
+>>>replacement4 = replacement3.replace('G', 'L')
+>>>replacement5 = replacement4.replace('H', 'T')
+>>>replacement6 = replacement5.replace('J', 'A')
+>>>replacement7 = replacement6.replace('K', 'G')
+>>>replacement8 = replacement7.replace('L', 'C')
+>>>print(replacement8)
+
+This gets us the result we are looking for. It avoids the problem with the previous program by using another letter to stand in for each base while the replacements are being done. 
+For example, A is first converted to H and then later on H is converted to T.
+Here's a slightly more elegant way of doing it. We can take advantage of the fact that the replace() method is case-sensitive, and make all the replaced bases lower case. 
+Then, once all the replacements have been carried out, we can simply call upper() and change the whole sequence back to upper case. Let's take a look at how this works:
+
+>>>my_dna = "ACTGATCGATTACGTATAGTATTTGCTATCATACATATATATCGATGCGTTCAT"
+>>>replacement1 = my_dna.replace('A', 't')
+>>>print(replacement1)
+>>>replacement2 = replacement1.replace('T', 'a')
+>>>print(replacement2)
+>>>replacement3 = replacement2.replace('C', 'g')
+>>>print(replacement3)
+>>>replacement4 = replacement3.replace('G', 'c')
+>>>print(replacement4)
+>>>print(replacement4.upper()) 
+We can see that as the program runs, each base in turn is replaced by its complement in lower case. 
+Since the next replacement is only looking for upper case characters, bases don't get changed back as they did in the first version of our program.
 
 
 3. 
@@ -25,6 +120,7 @@ Here's a short DNA sequence:
 The sequence contains a recognition site for the EcoRI restriction enzyme, which cuts at the motif G*AATTC (the position of the cut is indicated by an asterisk). 
 Write a program which will calculate the size of the two fragments that will be produced when the DNA sequence is digested with EcoRI.
 
+$ Solution
 
 
 
@@ -36,16 +132,31 @@ It comprises two exons and an intron. The first exon runs from the start of the 
 Write a program that will print just the coding regions of the DNA sequence.
 
 
+$ Solution
+
+
 
 5.
 Splicing out introns, part two
 Using the data from part one, write a program that will calculate what percentage of the DNA sequence is coding.
+
+$ Solution
+
 
 
 
 6.
 Splicing out introns, part three
 Using the data from part one, write a program that will print out the original genomic DNA sequence with coding bases in uppercase and non-coding bases in lowercase.
+
+$ Solution
+
+
+
+
+
+
+
 
 
 
