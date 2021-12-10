@@ -129,7 +129,73 @@ There is another method that belongs to the string type called upper().
 Here's another example of a useful method that belongs to the string type: replace(). 
 replace() is slightly different from anything we've seen before – it takes two arguments (both strings) and returns a copy of the variable where all occurrences of the first string are replaced by the second string. 
 That's quite a long- winded description, so here are a few examples to make things clearer:
+>>>protein = "vlspadktnv"
+# replace valine with tyrosine
+>>>print(protein.replace("v","y"))
+# we can replace more than one character
+>>>print(protein.replace("vls","ymt"))
+# the original variable is not affected
+>>>print(protein)
 
+# Extracting part of a string
+What do we do if we have a long string, but we only want a short portion of it? This is known as taking a substring, and it has its own notation in python. To get a substring, we follow the variable name with a pair of square brackets which enclose a start and stop position, separated by a colon.
+>>>protein = "vlspadktnv"
+# print positions three to five
+>>>print(protein[3:5])
+# positions start at zero, not one
+>>>print(protein[0:6])
+# if we use a stop position beyond the end, it's the same as using the end
+>>>print(protein[0:60])
+here are two important things to notice here. Firstly, we actually start counting from position zero, rather than one – in other words, position 3 is actually the fourth character1. This explains why the first character of the first line of output is p and not s as you might think. Secondly, the positions are inclusive at the start, but exclusive at the stop. In other words, the expression protein[3:5] gives us everything starting at the fourth character, and stopping just before the sixth character (i.e. characters four and five).
+If we just give a single number in the square brackets, we'll just get a single character:
+>>>protein = "vlspadktnv"
+>>>first_residue = protein[0]
+
+# Counting and finding substrings
+A very common job in biology is to count the number of times some pattern occurs in a DNA or protein sequence. In computer programming terms, what that translates to is counting the number of times a substring occurs in a string. The method that does the job is called count(). It takes a single argument whose type is string, and returns the number of times that the argument is found in the variable. The return type is a number, so be careful about how you use it!
+Let's use our protein sequence one last time as an example. Remember that we have to use our old friend str() to turn the counts into strings so that we can print them.
+>>>protein = "vlspadktnv"
+# count amino acid residues
+>>>valine_count = protein.count('v')
+>>>lsp_count = protein.count('lsp')
+>>>tryptophan_count = protein.count('w')
+# now print the counts
+>>>print("valines: " + str(valine_count))
+>>>print("lsp: " + str(lsp_count))
+>>>print("tryptophans: " + str(tryptophan_count))
+
+A closely related problem to counting substrings is finding their location. What if instead of counting the number of proline residues in protein sequence we want to know where they are? The find() method will die us the answer, at least for simple cases. find() takes a single string argument, just like count(), and returns a number which is the position at which that substring first appears in the string (in computing, we call that the index of the substring).
+Remember that in python we start counting from zero rather than one, so position 0 is the first character, position 4 is the fifth character, etc.
+>>>protein = "vlspadktnv"
+>>>print(str(protein.find('p')))
+>>>print(str(protein.find('kt')))
+>>>print(str(protein.find('w'))) 
+Notice the behavior of find() when we walk it to locate a substring that doesn't exist - we get back the answer -1.
+Both count() and find() have a pretty serious limitation: you can only search for exact substrings. If you need to count the number of occurrences of a variable protein motif, or find the position of a variable transcription factor binding site, they will not help you.
+Of the tools we've discussed in this section, three - replac(), count() and find() - require at least two strings to work, so be careful that you don't get confused about the order - remember that:
+>>>my_dna.count(my_motif)
+Is not the same as:
+>>> my_motif.count(my_dna)
+
+# Splitting up a string into multiple bits
+
+Recap
+We started this chapter talking about strings and how to work with them, but along the way we had to take a lot go diversions, all of which were necessary to understand how the different string tools work. Thankfully, that means that we've covered most of the nuts and bolts of the python language, which will make future chapters go much more smoothly.
+We've learned about some general features of the python:
+· the difference between functions, statements and arguments
+· the importance of comments and how to use them
+· how to use python's error messages to fix bugs in our programs
+· how to store values in variables
+· the way that types work, and the importance of understanding them
+· the difference between functions and methods, and how to use them both
+And we've encountered some tools that are specifically for working with strings:
+· concatenation
+· different types of quotes and how to use them
+· special characters
+· changing the case of a string
+· finding and counting substrings
+· replacing bits of a string with something new
+· extracting bits of a string to make a new string
 
 
 
