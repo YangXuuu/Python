@@ -133,6 +133,36 @@ Write a program that will print just the coding regions of the DNA sequence.
 
 
 $ Solution
+In this exercise, we’re being asked to produce a program that does the job of a spliceosome – splits a DNA sequence at two specified locations to make three pieces, then join the outer two pieces together. We can start by defining a variable to hold the DNA sequence:
+>>>my_dna =
+"ATCGATCGATCGATCGACTGACTAGTCATAGCTATGCATGTAGCTACTCGATCGATCGATCGATCGATCGATC
+GATCGATCGATCATGCTATCATCGATCGATATCGATGCATCGACTACTAT"
+Because the sequence is quite long, this single statement actually runs over three lines.
+The next step in solving this exercise is to extract the two exons from our DNA sequence. We’ll have to use the substring notation from earlier in the chapter, and we’ll need to take care with the numbers.
+>>>exon1 = my_dna[1:63]
+However, remember that when we take a substring like this the numbers are inclusive at the start, but exclusive at the end, so our stop position needs to be one higher: 
+>>>exon1 = my_dna[1:64]
+The second exon starts at the ninety-/rst base and goes to the end of the DNA sequence. There are a number of different ways we could express this. One is to /gure out the position of the last character by using the len() function to get the length of the DNA sequence: 
+>>>exon2 = my_dna[91:len(my_dna)]
+But we could be lazier and write it like this: 
+>>>exon2 = my_dna[91:10000]
+taking advantage of the fact that giving a stop position beyond the end of the my_dna string will cause the substring to run to the end. In fact, we can do even better by leaving off the stop position entirely – this code will do the same: 
+>>>exon2 = my_dna[91:]
+
+Putting all these ideas together gives us this program:
+>>>my_dna =
+"ATCGATCGATCGATCGACTGACTAGTCATAGCTATGCATGTAGCTACTCGATCGATCGATCGATCGATCGATC
+GATCGATCGATCATGCTATCATCGATCGATATCGATGCATCGACTACTAT"
+>>>exon1 = my_dna[1:64]
+>>>exon2 = my_dna[91:]
+>>>print(exon1 + exon2)
+but when we look more closely we can see that something is not right. The printed coding sequence is supposed to start at the very /rst character of the input sequence, but it's starting at the second. We have forgotten to take into account the fact that Python starts counting from zero, so our numbers are all too high by one. Let's try again: 
+>>>my_dna =
+"ATCGATCGATCGATCGACTGACTAGTCATAGCTATGCATGTAGCTACTCGATCGATCGATCGATCGATCGATC
+GATCGATCGATCATGCTATCATCGATCGATATCGATGCATCGACTACTAT"
+>>>exon1 = my_dna[0:63]
+>>>exon2 = my_dna[90:]
+>>>print(exon1 + exon2)
 
 
 
@@ -141,8 +171,17 @@ Splicing out introns, part two
 Using the data from part one, write a program that will calculate what percentage of the DNA sequence is coding.
 
 $ Solution
-
-
+This is a straightforward piece of number-crunching. There are a couple of was to go about it. We could use the exon start-stop coordinates to calculate the length of the coding portion of the sequence. However, since we’ve already written the code to generate the coding sequence, we can simply calculate the length of it, and then divide by the length of the input sequence.
+>>>my_dna =
+"ATCGATCGATCGATCGACTGACTAGTCATAGCTATGCATGTAGCTACTCGATCGATCGATCGATCGATCGATC
+GATCGATCGATCATGCTATCATCGATCGATATCGATGCATCGACTACTAT"
+>>>exon1 = my_dna[0:63]
+>>>exon2 = my_dna[90:10000]
+>>>coding_length = len(exon1 + exon2)
+>>>total_length = len(my_dna)
+>>>print(coding_length / total_length)
+We have calculated the coding proportion as a fraction, but the exercise called for a percentage. We can easily fix this by manipulating by 100. Notice that the symbol for multiplication is not x, as you might think, but *. The final code:
+>>>print(100*coding_length/total_length)
 
 
 6.
@@ -150,6 +189,19 @@ Splicing out introns, part three
 Using the data from part one, write a program that will print out the original genomic DNA sequence with coding bases in uppercase and non-coding bases in lowercase.
 
 $ Solution
+All we need to do is extract the intron sequence as well as the exons, convert it to lower case, then concatenate the three sequences to recreate the original genomic sequence:
+>>>my_dna =
+"ATCGATCGATCGATCGACTGACTAGTCATAGCTATGCATGTAGCTACTCGATCGATCGATCGATCGATCGATC
+GATCGATCGATCATGCTATCATCGATCGATATCGATGCATCGACTACTAT"
+>>>exon1 = my_dna[0:63]
+>>>intron = my_dna[63:90]
+>>>exon2 = my_dna[90:]
+>>>print(exon1 + intron.lower() + exon2)
+When we are applying several transformations to text, as in this exercise, there are usually a number of different ways we can write the program. For example, we could store the lower case version of the intron, rather than converting it to lower case when printing:
+>>>intron = my_dna[63:90].lower()
+Or we could avoid using variables for the inronx and exons all together, and do everything in one big print() function.
+>>>print(my_dna[0:63] + my_dna[63:90].lower() + my_dna[90:10000])
+This last option is very concise, but a bit harder to read than the more verbose way.
 
 
 
