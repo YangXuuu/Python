@@ -1,1 +1,75 @@
+Another reason for our interest in file input/output is the need for our python programs to work as part of a pipeline or work flow involving other, existing tools. When it comes to using python in the real world, we often want python to either accept data from, or provide data to, another program. Often the easiest way to do this is to have python read, or write, files in a format that the other program already understands.
 
+# Reading text from a file
+Examples of text files which you might have encountered include: FASTA files of DNA or protein sequences, files containing output from command-line programs(e.g. BLAST), FASTQ files containing DNA sequencing reads, HTML files, word processing documents, and python code.
+
+In contrast, most files that you encounter day-to-day will be binary files - ones which are not made up of characters landlines, but of binary data. Examples include: image files (JPEGs and PNGs), audio files, video files, compressed files (e.g. ZIP files).
+
+If you're not sure whether a particular file is text or binary, there's a very simple way to tell – just open it up in a text editor. If the file displays without any problem, then it's text (regardless of whether you can make sense of it or not). If you get an error or a warning from your text editor, or the file displays as a collection of indecipherable characters, then it's binary.
+
+# Using open to read a file
+>>>my_file = open("dna.txt")
+The first thing we need to be able to do is to read the contents of the file. The file type has a read() method which does this. It doesn't take any arguments, and the return value is a string, which we can store in a variable. Once we've read the file contents into a variable, we can treat them just like any other string - for example, we can print them:
+>>>my_file = open("dna.txt")
+>>>file_contents = my_file.read()
+>>>print(file_contents)
+
+# Files, contents and filenames
+1 my_file_name = "dna.txt"
+2 my_file = open(my_file_name)
+3 my_file_contents = my_file.read()
+On line 1, we store the string dna.txt in the variable my_file)name. On line 2, we use the variable my_file_name as the argument to the open() function, and store the resulting file object in the variable my_file. On line 3, we call the read() method on the variable my_file, and store the resulting string in the variable my_file_contents.
+The important thing to understand about this code is that there three separate variables which have different types and which are storing three very different things:
+my_file_name is a string, and it stores the name of a file on disk
+my_file is a file object, and it represents the file itself
+my_file_contents is a string, and it stores the text that is in the file
+
+A common error is to try to use the read() method on the wrong thing. Recall that read() is a method that only works on file objects. If we try to use the read() method on the filename - week get an attribute error.
+
+# Dealing with newlines
+We'll use the dna.txt file from the chapter 3 exercises folder. This file contains a single line with a short DNA sequence. Open the file up in a text editor and take a look at it.
+We're going to write a simple program to read the DNA sequence from the file and print it out along with its length. Putting together the file functions and methods from this chapter, and the material we saw in the previous chapter we get the following code:
+# open the file
+>>>my_file = open("dna.txt")
+# read the contents
+>>>my_dna = my_file.read()
+# calculate the length
+>>>dna_length = len(my_dna)
+# print the output
+>>>print("sequence is " + my_dna +  " and length is " + str(dna_length))
+when we look at the output, we can see that there are two things wrong:
+$sequence is ACTGTACGTGCACTGATC
+$ and length is 19
+Firstly, the output has been split over two lines, even though we didn't ask for it. And secondly, the length is wrong - there are only 18 characters in the DNA string.
+Both of these problems have the same explanation: python has included the newline character at the end of the file as part of the contents. In other words. The variable my_dna has a newline character at the end of it. If we could view the my_dna variable directly, we would see that it looks like this:
+$'ACTGTACGTGCACTGATC\n'
+This explains why the output from our program is split over two lines - the newline character is part of the string we are trying to print. It also explains why the length is wrong - python is including the newline character when it counts the number of characters in the string.
+The solution is simple. Because this is such a common problem, strings have a method for removing newline characters from the end of them. The method is called rstrip(), and it takes one string argument which is the character that you want to move.in this case, we want to remove the newline character(\n). Here's a modified version of the code – note that the argument to rstrip() is itself a string so needs to be enclosed in quotes:
+>>>my_file = open("dna.txt")
+>>>my_file_contents = my_file.read()
+# remove the newline from the end of the file contents
+>>>my_dna = my_file_contents.rstrip("\n")
+>>>dna_length = len(my_dna)
+>>>print("sequence is " + my_dna +  " and length is " + str(dna_length))
+In the code above, we first read the file contents and then removed the newline, in two separate steps:
+>>>my_file_contents = my_file.read()
+>>>my_dna = my_file_contents.rstrip("\n")
+But it's more common to read the contents and remove the newline all in one go:
+>>>my_dna = my_file.read().rstrip("\n")
+This is a bit tricky to read at first as we are using two different methods(read() and rstrip()) in the same statement. The key is to read it from left to right - we take the my_file variable and use the read() method on it, then we take the output of that method (which we know is a string) and use the rstrip() method on it. The result of the rstrip() method is then stored in the my_dna variable.
+If you find it difficult write the whole thing as one statement like this, just break it up and do the two things separately - your programs will run just as well.
+
+# Missing files
+What happens if we try to read a file that doesn't exist?
+>>>my_file = open("nonexistent.txt")
+We get an IOError
+
+# Writing text to files
+All the example programs that we've seen so far in this book have produced output straight to the screen. That's great for exploring new features and when working on programs, because it allows you to see the effect of changes to the code right away. It has a few drawbacks, however, when writing code that we might want to use in real life.
+Printing output to the screen only really works well when there isn't very much of it1. It's great for short programs and status messages, but quickly becomes cumbersome for large amounts of output. Some terminals struggle with large amounts of text, or worse, have a limited scrollback capability which can cause the first bit of your output to disappear. It's not easy to search in output that's being displayed at the terminal, and long lines tend to get wrapped. Also, for many programs we want to send different bits of output to different files, rather than having it all dumped in the same place.
+Most importantly, terminal output vanishes when you close your terminal program. For small programs like the examples in this book, that's not a problem – if you want to see the output again you can just re-run the program. If you have a program that requires a few hours to run, that's not such a great option.
+
+# Opening files for writing
+In the previous section, we saw how to open a file and read its contents. We can also open a file and write some data to it, but we have to use the open() function in a slightly different way. To open a file for writing, we use a two-argument version of open(), where the second argument is a specially-formatted string describing what we want to do to the file2. This second argument can be "r" for reading, "w" for writing, or "a" for appending3. If we leave out the second argument (like we did for all the examples above), Python uses the default, which is "r" for reading.
+
+The difference between "w" and "a" is subtle, but important. If we open a file that already exists using the mode "w", then we will overwrite the current contents with
