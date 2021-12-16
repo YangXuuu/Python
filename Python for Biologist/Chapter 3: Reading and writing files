@@ -1,15 +1,20 @@
-Another reason for our interest in file input/output is the need for our python programs to work as part of a pipeline or work flow involving other, existing tools. When it comes to using python in the real world, we often want python to either accept data from, or provide data to, another program. Often the easiest way to do this is to have python read, or write, files in a format that the other program already understands.
+Another reason for our interest in file input/output is the need for our python programs to work as part of a pipeline or work flow involving other, existing tools. 
+When it comes to using python in the real world, we often want python to either accept data from, or provide data to, another program. Often the easiest way to do this is to have python read, or write, files in a format that the other program already understands.
 
 # Reading text from a file
-Examples of text files which you might have encountered include: FASTA files of DNA or protein sequences, files containing output from command-line programs(e.g. BLAST), FASTQ files containing DNA sequencing reads, HTML files, word processing documents, and python code.
+Examples of text files which you might have encountered include: FASTA files of DNA or protein sequences, files containing output from command-line programs
+(e.g. BLAST), FASTQ files containing DNA sequencing reads, HTML files, word processing documents, and python code.
 
-In contrast, most files that you encounter day-to-day will be binary files - ones which are not made up of characters landlines, but of binary data. Examples include: image files (JPEGs and PNGs), audio files, video files, compressed files (e.g. ZIP files).
+In contrast, most files that you encounter day-to-day will be binary files - ones which are not made up of characters landlines, but of binary data. 
+Examples include: image files (JPEGs and PNGs), audio files, video files, compressed files (e.g. ZIP files).
 
-If you're not sure whether a particular file is text or binary, there's a very simple way to tell – just open it up in a text editor. If the file displays without any problem, then it's text (regardless of whether you can make sense of it or not). If you get an error or a warning from your text editor, or the file displays as a collection of indecipherable characters, then it's binary.
+If you're not sure whether a particular file is text or binary, there's a very simple way to tell – just open it up in a text editor. 
+If the file displays without any problem, then it's text (regardless of whether you can make sense of it or not). If you get an error or a warning from your text editor, or the file displays as a collection of indecipherable characters, then it's binary.
 
 # Using open to read a file
 >>>my_file = open("dna.txt")
-The first thing we need to be able to do is to read the contents of the file. The file type has a read() method which does this. It doesn't take any arguments, and the return value is a string, which we can store in a variable. Once we've read the file contents into a variable, we can treat them just like any other string - for example, we can print them:
+The first thing we need to be able to do is to read the contents of the file. The file type has a read() method which does this. 
+It doesn't take any arguments, and the return value is a string, which we can store in a variable. Once we've read the file contents into a variable, we can treat them just like any other string - for example, we can print them:
 >>>my_file = open("dna.txt")
 >>>file_contents = my_file.read()
 >>>print(file_contents)
@@ -18,7 +23,8 @@ The first thing we need to be able to do is to read the contents of the file. Th
 1 my_file_name = "dna.txt"
 2 my_file = open(my_file_name)
 3 my_file_contents = my_file.read()
-On line 1, we store the string dna.txt in the variable my_file)name. On line 2, we use the variable my_file_name as the argument to the open() function, and store the resulting file object in the variable my_file. On line 3, we call the read() method on the variable my_file, and store the resulting string in the variable my_file_contents.
+On line 1, we store the string dna.txt in the variable my_file)name. On line 2, we use the variable my_file_name as the argument to the open() function, and store the resulting file object in the variable my_file. 
+On line 3, we call the read() method on the variable my_file, and store the resulting string in the variable my_file_contents.
 The important thing to understand about this code is that there three separate variables which have different types and which are storing three very different things:
 my_file_name is a string, and it stores the name of a file on disk
 my_file is a file object, and it represents the file itself
@@ -41,10 +47,13 @@ when we look at the output, we can see that there are two things wrong:
 $sequence is ACTGTACGTGCACTGATC
 $ and length is 19
 Firstly, the output has been split over two lines, even though we didn't ask for it. And secondly, the length is wrong - there are only 18 characters in the DNA string.
-Both of these problems have the same explanation: python has included the newline character at the end of the file as part of the contents. In other words. The variable my_dna has a newline character at the end of it. If we could view the my_dna variable directly, we would see that it looks like this:
+Both of these problems have the same explanation: python has included the newline character at the end of the file as part of the contents. In other words. The variable my_dna has a newline character at the end of it. 
+If we could view the my_dna variable directly, we would see that it looks like this:
 $'ACTGTACGTGCACTGATC\n'
-This explains why the output from our program is split over two lines - the newline character is part of the string we are trying to print. It also explains why the length is wrong - python is including the newline character when it counts the number of characters in the string.
-The solution is simple. Because this is such a common problem, strings have a method for removing newline characters from the end of them. The method is called rstrip(), and it takes one string argument which is the character that you want to move.in this case, we want to remove the newline character(\n). Here's a modified version of the code – note that the argument to rstrip() is itself a string so needs to be enclosed in quotes:
+This explains why the output from our program is split over two lines - the newline character is part of the string we are trying to print. 
+It also explains why the length is wrong - python is including the newline character when it counts the number of characters in the string.
+The solution is simple. Because this is such a common problem, strings have a method for removing newline characters from the end of them. 
+The method is called rstrip(), and it takes one string argument which is the character that you want to move.in this case, we want to remove the newline character(\n). Here's a modified version of the code – note that the argument to rstrip() is itself a string so needs to be enclosed in quotes:
 >>>my_file = open("dna.txt")
 >>>my_file_contents = my_file.read()
 # remove the newline from the end of the file contents
@@ -56,7 +65,8 @@ In the code above, we first read the file contents and then removed the newline,
 >>>my_dna = my_file_contents.rstrip("\n")
 But it's more common to read the contents and remove the newline all in one go:
 >>>my_dna = my_file.read().rstrip("\n")
-This is a bit tricky to read at first as we are using two different methods(read() and rstrip()) in the same statement. The key is to read it from left to right - we take the my_file variable and use the read() method on it, then we take the output of that method (which we know is a string) and use the rstrip() method on it. The result of the rstrip() method is then stored in the my_dna variable.
+This is a bit tricky to read at first as we are using two different methods(read() and rstrip()) in the same statement. 
+The key is to read it from left to right - we take the my_file variable and use the read() method on it, then we take the output of that method (which we know is a string) and use the rstrip() method on it. The result of the rstrip() method is then stored in the my_dna variable.
 If you find it difficult write the whole thing as one statement like this, just break it up and do the two things separately - your programs will run just as well.
 
 # Missing files
@@ -65,11 +75,51 @@ What happens if we try to read a file that doesn't exist?
 We get an IOError
 
 # Writing text to files
-All the example programs that we've seen so far in this book have produced output straight to the screen. That's great for exploring new features and when working on programs, because it allows you to see the effect of changes to the code right away. It has a few drawbacks, however, when writing code that we might want to use in real life.
-Printing output to the screen only really works well when there isn't very much of it1. It's great for short programs and status messages, but quickly becomes cumbersome for large amounts of output. Some terminals struggle with large amounts of text, or worse, have a limited scrollback capability which can cause the first bit of your output to disappear. It's not easy to search in output that's being displayed at the terminal, and long lines tend to get wrapped. Also, for many programs we want to send different bits of output to different files, rather than having it all dumped in the same place.
-Most importantly, terminal output vanishes when you close your terminal program. For small programs like the examples in this book, that's not a problem – if you want to see the output again you can just re-run the program. If you have a program that requires a few hours to run, that's not such a great option.
+All the example programs that we've seen so far in this book have produced output straight to the screen. That's great for exploring new features and when working on programs, 
+because it allows you to see the effect of changes to the code right away. It has a few drawbacks, however, when writing code that we might want to use in real life.
+Printing output to the screen only really works well when there isn't very much of it1. It's great for short programs and status messages, 
+but quickly becomes cumbersome for large amounts of output. Some terminals struggle with large amounts of text, or worse, have a limited scrollback capability which can cause the first bit of your output to disappear. It's not easy to search in output that's being displayed at the terminal, and long lines tend to get wrapped. Also, for many programs we want to send different bits of output to different files, rather than having it all dumped in the same place.
+Most importantly, terminal output vanishes when you close your terminal program. For small programs like the examples in this book, that's not a problem – if you want to see the output again you can just re-run the program. 
+If you have a program that requires a few hours to run, that's not such a great option.
 
 # Opening files for writing
 In the previous section, we saw how to open a file and read its contents. We can also open a file and write some data to it, but we have to use the open() function in a slightly different way. To open a file for writing, we use a two-argument version of open(), where the second argument is a specially-formatted string describing what we want to do to the file2. This second argument can be "r" for reading, "w" for writing, or "a" for appending3. If we leave out the second argument (like we did for all the examples above), Python uses the default, which is "r" for reading.
 
-The difference between "w" and "a" is subtle, but important. If we open a file that already exists using the mode "w", then we will overwrite the current contents with
+The difference between "w" and "a" is subtle, but important. If we open a file that already exists using the mode "w", then we will overwrite the current contents with whatever data we write to it. If we open an existing file with the mode "a", it will add new data onto the end of the file, but will not remove any existing content. If there doesn't already exist a file with the specified name, then "w" and "a" behave identically - they will both create a new file to hold the output.
+
+Quite a lot of python functions and methods have these optional arguments. Once we've opened a file for writing, we can use the file write() method to write some text to it. write() works a lot like print() - it takes a single string argument - but instead of printing the string to the screen it writes it to the file.
+Here's how we use open() with a second argument to open a file and write a single line of text to it:
+>>>my_file = open("out.txt", "w")
+>>>my_file.write("hello world")
+Because the output is being written to the file in this example, you won't see any output on the screen if you run it. To check that the code has worked, you'll have to run it, then open up the file out.txt in your text editor and check that its contents are what you expect.
+Remember that with write(), just like with print(), we can use any string as the argument. This also means that we can use any method or function that returns a string. The following are all perfectly ok:
+# write "abcdef"
+>>>my_file.write("abc" + "def")
+# write "8"
+>>>my_file.write(str(len('AGTGCTAG')))
+# write "TTGC"
+>>>my_file.write("ATGC".replace('A', 'T'))
+# write "atgc"
+>>>my_file.write("ATGC".lower())
+# write contents of my_variable
+>>>my_file.write(my_variable)
+
+# Closing files
+There's one more important file method to look at before we finish this chapter - close(). Unsurprisingly, this is the opposite of open() (but note that it's a method, whereas open() is a function). We should call close() after we're done reading or writing to a file - we won't go into details here, but it's a good habit to get into as it avoids some types of bugs that can be tricky to track down. close() is an unusual method as it takes no arguments (so it's called with an empty pair of parentheses) and doesn't return any useful value:
+>>>my_file = open("out.txt", "w")
+>>>my_file.write("Hello world")
+# remember to close the file
+>>>my_file.close()
+
+# Path and folders
+So far, we have only dealt with opening files in the same folder that we are running our program. What if we want to open a file from a different part of the file system?
+The open() function is quite happy to deal with files from anywhere on your computer, as long as you give the full path. 
+Just give the path to the file as the argument rather than the name of the file. The format of the file path looks different depending on your operating system. 
+If you're on linux, it will look like:
+>>>my_file = open("/home/martin/myfolder/myfile.txt")
+On windows:
+>>>my_file = open(r"c:\windows\Desktop\myfolder\myfile.txt")
+On Mac:
+my_file = open("/Users/martin/Desktop/myfolder/myfile.txt")
+
+We've seen how working with file contents is always a two-step process - we must open a file before reading or writing  and looked at several common pitfalls.
