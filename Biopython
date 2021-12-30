@@ -36,3 +36,84 @@ $ grep ">" xxx.fa | wc
 >>> for record in sequences:
 ...     L.append(record)
 >>> len(L)
+
+
+1. Creating a sequence
+To create your own sequence, you can use the bio python Seq object.
+>>> from Bio.Seq import Seq
+>>> my_sequence = Seq("ATGC")
+>>> print("The sequence is", my_sequence)
+$ The sequence is ATGC
+>>> print("The length of the sequence is", len(my_sequence))
+$ The length of the sequence is 13
+
+2. Get the reverse complement of a sequence
+You can easily get the reverse complements of a sequence using a single function call reverse_complement().
+>>> print("The reverse complement of the sequence is", my_sequence.reverse_complement())
+$ The reverse complement of the sequence is TACG
+
+3. Count the number of occurrences of a nucleotide
+You can get the number of occurrence of a particular nucleotide using the count() function.
+>>> print("The number of As in the sequence", my_sequence.count("A"))
+$ The number of As in the sequence 3
+
+4. Find the starting index of a subsequence
+You can find the starting index of a subsequence using the find() function.
+>>> print("Found TTG in the sequence at index", my_sequence.find("TTG"))
+$ Found TTG in the sequence at index 6
+
+5. Reading a sequence file
+Biopython's SeqIO (Sequence Input/Output) interface can be used to read sequence files. The parse() function takes a file (with a file handle and format) and returns a SeqRecord iterator. Following is an example of how to read a FASTA file.
+>>> from Bio import SeqIO
+>>> for record in SeqIO.parse("example.fasta", "fasta"):
+       print(record.id)
+
+record.id will return the identifier of the sequence. record.seq will return the sequence itself. record.description will return the sequence description. 
+
+6. Writing sequences to a file
+Biopython's SeqIO interface can be used to write sequences to files. Following is an example where a list of sequences are written to a FASTA file.
+>>> from Bio import SeqIO
+>>> from Bio.SeqRecord import SeqRecord
+>>> from Bio.Alphabet import generic_dna
+>>> sequences = ["AAACGTGG", "TGAACCG", "GGTGCA", "CCAATGCG"]
+>>> records = (SeqRecord(Seq(seq, generic_dna), str(index)) for index, seq in enumerate(sequences))
+>>> with open("example.fasta", "w") as output_handle:
+>>>    SeqIO.write(records, output_handle, "fasta")
+
+This code will result in a FASTA file with sequence ids starting from 0. If you want to give a custom id and a description you can create the records as follows.
+>>> sequences = ["AAACGTGG", "TGAACCG", "GGTGCA", "CCAATGCG"]
+>>> new_sequences = []
+>>> i=1
+>>> for sequence in sequences:
+       record = SeqRecord(sequence, id="Seq_"+str(i), name="Seq_"+str(i), description="<custom description>")
+       new_sequences.append(record)
+    with open("example.fasta", "w") as output_handle:
+       SeqIO.write(new_sequences, output_handle, "fasta")
+
+The SeqIO.write() function will return the number of sequences written.
+
+7. Convert a FASTQ file to FASTA file
+We need to convert DNA data file formats in certain applications. For example, we can do file format conversions from FASTQ to FASTA as follows.
+>>> from Bio import SeqIO
+>>> with open("path/tofastq/file.fastq", "r") as input_handle, open("path/to/fasta/file.fasta", "w") as output_handle:
+>>>    sequences = SeqIO.parse(input_handle, "fastq")
+>>>    count = SeqIO.write(sequences, output_handle, "fasta")
+>>>    print("Converted %i records" % count)
+
+If you want to convert a GenBank file to FASTA format,
+>>> from Bio import SeqIO
+>>> with open("path/to/genbank/file.gb", "rU") as input_handle, open("path/to/fasta/file.fasta", "w") as output_handle:
+>>>    sequences = SeqIO.parse(input_handle, "genbank")
+>>>    count = SeqIO.write(sequences, output_handle, "fasta")
+>>>    print("Converted %i records" % count)
+
+8. Separate sequences by ids from a list of ids
+Assume that you have a list of sequence identifiers in a file named list.lst where you want to separate the corresponding sequences from a FASTA file. You can run the following and write those sequences to a file.
+>>> from Bio import SeqIO
+>>> ids = set(x[:-1] for x in open(path+"list.lst"))
+>>> with open(path+'list.fq', mode='a') as my_output:
+>>>    for seq in SeqIO.parse(path+"list_sequences.fq", "fastq"):
+>>>       if seq.id in ids:
+>>>          my_output.write(seq.format("fastq"))
+
+
