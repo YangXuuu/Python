@@ -117,3 +117,48 @@ Assume that you have a list of sequence identifiers in a file named list.lst whe
 >>>          my_output.write(seq.format("fastq"))
 
 
+
+
+
+
+
+
+
+
+Biopython Handbook
+5.6 Low level FASTA and FASTQ parsers
+Working with the low-level SimpleFastaParser or FastqGeneralIterator is often more practical than Bio.SeqIO.parse when dealing with large high-throughout FASTA or FASTQ sequencing files where speed matters. As noted in the introduction to this chapter, the file-format neutral Bio.SeqIO interface has the overhead of creating many objects even for simple formats like FASTA.
+
+When parsing FASTA files, internally Bio.SeqIO.parse() calls the low-level SimpleFastaParser with the file handle. You can use this directly - it iterates over the file handle returning each record as a tuple of two strings, the title line (everything after the > character) and the sequence (as a plain string):
+>>> from Bio.SeqIO.FastaIO import SimpleFastaParser
+>>> count = 0
+>>> total_len = 0
+>>> with open("ls_orchid.fasta") as in_handle:
+...    for title, seq in SimpleFastaParser(in_handle):
+...       count +=1
+...       total_len += len(seq)
+...
+>>> print("%I records with total sequence length %i" % (count, total_len))
+$ 94 records with total sequence length 67518
+
+As long as you don't care about line wrapping (and you probably don't for short read high-throughput data), then outputting FASTA format from these strings is also very fast.
+...
+out_handle.write(">%s\n%s\n" % (title, seq))
+...
+
+Likewise, when parsing FASTQ files, internally Bio.SeqIO.parse() calls the low-level FastqGeneralIterator with the file handle. If you don't need the quality scores turned into integers, or can work with them as ASCII strings this is ideal:
+>>> from Bio.SeqIO.QualityIO import FastqGeneralIterator
+>>> count = 0
+>>> total_len = 0
+>>> with open("example.fastq") as in_handle:
+...     for title, seq, qual in FastqGeneralIterator(in_handle):
+...         count += 1
+...         total_len += len(seq)
+...
+>>> print("%i records with total sequence length %i" % (count, total_len))
+3 records with total sequence length 75
+There are more examples of this in the Cookbook (Chapter ‍20), including how to output FASTQ efficiently from strings using this code snippet:
+
+...
+out_handle.write("@%s\n%s\n+\n%s\n" % (title, seq, qual))
+...
