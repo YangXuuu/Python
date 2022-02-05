@@ -202,3 +202,14 @@ with open as f避免忘记关闭文件
 
 保留小于6的值，并按原序列生成新的list
 
+
+The result is of type float again. The general rule is as follows: 
+if you have an operator such as multiplication *, addition +, or subtraction -, and both operands are of type int, then the result is also of type int. 
+However, if at least one of the operands is of type float or the operator is division, then the result is of type float.
+
+Expression	         Result
+int(*,+,-)int	   int
+int/int	         float
+float(*,+,-,/)float  float
+float(*,+,-,/)int	   float
+int(*,+,-,/)float	   float
