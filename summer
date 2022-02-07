@@ -1,0 +1,60 @@
+COMP90059
+
+> xx = "number"
+> print(xx[0])
+$ n
+> print(xx[-1])
+$ r
+> print(xx[0:4])
+$ numb
+> print(xx[0:len(xx)])
+$ number
+
+## Note the negative indexes are one-offset (i.e. start from -1) while the positive indexes are zero-offset (i.e. start from 0).
+
+## Python provides two shortcuts for common slice values:
+1. If the start index is 0 then you can leave it blank
+2. If the end index is the length of the string you can leave it blank
+> print(xx[:])
+$ number
+
+## specify a third number indicating how much to step through the list
+> print(xx:[::3])
+$ nb
+> print(xx[0:4:2])
+$ nm
+> print(xx:[2::1])
+$ mun
+Note that the direction of the indices must be changed also. If there is nothing in between the indices, an empty string is returned (unlike indexing beyond the ends of the string, which led to an error)
+
+The second kind of sequence we will look at is called a list. Lists are for storing sequences of possibly different objects. You might, for example, want to store a list of words, to find which one was the longest. Or you might want to store a list of numbers, such as the costs of different items. Or maybe lists of both. You would define these lists like so:
+
+> my_words = ['pig','pineapple','panoply','polyp']
+> my_costs = [5.0, 12.0, 200000000.59]
+> my_jumble = ['jumbly', 'wumbly', 'number', 5]
+> print(my_costs)
+
+The in operator also works for lists
+> my_list = [1,2,3]
+> print(1 in my_list)
+$ True
+
+# Overloading
+When an operator works for more than one data type (lie +) which works for sequences and numeric types, we say that operator is overloaded.
+
+
+# Tuple - can obtain any combination of objects but cannot be changed after creation / immutable.
+A tuple is defined similarly to a list, but with round brackets (or "parentheses") rather than square brackets. An empty tuple is a pair of round brackets with nothing between them. A tuple with one item is a pair of round brackets around a value followed by a comma (what would a pair of round brackets around a value without a comma be?). 
+
+
+# f-strings
+> num1 = 5
+> num2 = 6.7
+> print("The quotient of " + str(num1) + " and " + str(num2) + " is " + str(num1/num2))
+> print("The quotient of", num1, "and", num2, "is", num1/num2)
+
+> num1 = 5
+> num2 = 6.7
+> print(f"The quotient of {num1} and {num2} is {num1/num2:.2f}")
+
+
