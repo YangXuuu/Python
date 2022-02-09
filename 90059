@@ -1,0 +1,159 @@
+COMP90059
+
+
+# 生成一个指定范围的整数，1<=n<=5
+> random.randint(1,5)
+
+
+> xx = "number"
+> print(xx[0])
+$ n
+> print(xx[-1])
+$ r
+> print(xx[0:4])
+$ numb
+> print(xx[0:len(xx)])
+$ number
+
+## Note the negative indexes are one-offset (i.e. start from -1) while the positive indexes are zero-offset (i.e. start from 0).
+
+## Python provides two shortcuts for common slice values:
+1. If the start index is 0 then you can leave it blank
+2. If the end index is the length of the string you can leave it blank
+> print(xx[:])
+$ number
+
+## specify a third number indicating how much to step through the list
+> print(xx:[::3])
+$ nb
+> print(xx[0:4:2])
+$ nm
+> print(xx:[2::1])
+$ mun
+Note that the direction of the indices must be changed also. If there is nothing in between the indices, an empty string is returned (unlike indexing beyond the ends of the string, which led to an error)
+
+The second kind of sequence we will look at is called a list. Lists are for storing sequences of possibly different objects. You might, for example, want to store a list of words, to find which one was the longest. Or you might want to store a list of numbers, such as the costs of different items. Or maybe lists of both. You would define these lists like so:
+
+> my_words = ['pig','pineapple','panoply','polyp']
+> my_costs = [5.0, 12.0, 200000000.59]
+> my_jumble = ['jumbly', 'wumbly', 'number', 5]
+> print(my_costs)
+
+The in operator also works for lists
+> my_list = [1,2,3]
+> print(1 in my_list)
+$ True
+
+# Overloading
+When an operator works for more than one data type (lie +) which works for sequences and numeric types, we say that operator is overloaded.
+
+
+# Tuple - can obtain any combination of objects but cannot be changed after creation / immutable.
+A tuple is defined similarly to a list, but with round brackets (or "parentheses") rather than square brackets. An empty tuple is a pair of round brackets with nothing between them. A tuple with one item is a pair of round brackets around a value followed by a comma (what would a pair of round brackets around a value without a comma be?). 
+
+
+# f-strings
+> num1 = 5
+> num2 = 6.7
+> print("The quotient of " + str(num1) + " and " + str(num2) + " is " + str(num1/num2))
+> print("The quotient of", num1, "and", num2, "is", num1/num2)
+
+> num1 = 5
+> num2 = 6.7
+> print(f"The quotient of {num1} and {num2} is {num1/num2:.2f}")
+
+
+
+# For floating point numbers (i.e. numbers of type float), Python has even finer control. The format specifier {:6.2f} tells the f-string to use at least 6 characters in total and use exactly two digits after the decimal point. Here are two examples:
+
+$ print(f'{3.1415926:<6.2f}')  # pad on the right
+$ print(f'{3.1415926:6.2f}')   # pad on the left
+> 3.14  
+>   3.14
+
+$ print(f'{"big long string":>5.2}')
+$ print(f'{"big long string":5.5}')
+>    bi
+> big l
+
+
+In addition, f-strings have the ability to embed type specifiers as a suffix in the format specifier. For example, in the following case:
+> print(f'strings: {"9743":>7s}')
+$ strings:    9743
+
+> print(f'"optimal" rendering of 2/2: {2/2:g}')
+> print(f'"optimal" rendering of 3/2: {3/2:g}')
+> print(f'"optimal" rendering of 1/3: {1/3:g}')
+> print(f'binary rendering of 9743: {9743:b}')
+> print(f'integer base 16 rendering of 9743: {9743:x}')
+> print(f'Call me on my {9743:c}')  # yes, it's a telephone
+
+$ "optimal" rendering of 2/2: 1
+$ "optimal" rendering of 3/2: 1.5
+$ "optimal" rendering of 1/3: 0.333333
+$ binary rendering of 9743: 10011000001111
+$ integer base 16 rendering of 9743: 260f
+$ Call me on my ☏​
+
+>7 indicates that the argument should be right-justified (>) in a window of 7 characters (7), and the final s indicates that the argument is a string (i.e. simply acts as a type check in this instance). More interesting examples of type specifiers are g (render a float using "optimal" notation, using an "appropriate" number of decimal places, depending on the value), b (render as a binary number), x (render as a hexadecimal number), and c (map an integer to a Unicode code point):
+
+
+# f-strings insists on the colon before the format specification (e.g. .2f). It uses the colon as a delimiter to separate the argument from the format specifier. In all of our examples to date, the argument has been a literal (something you hopefully cringed at in the last slide, when we had the same literal twice in a string, rather than a variable), but it can also be a variable or an arbitrary expression; in the absence of a colon, it is interpreted as a statement by Python, e.g.:
+
+> mystr = "Hi Ho!"
+> print(f"\"{mystr} {mystr} It's off to work we go!\", sang the {42/6:g} dwarves.")
+> t1 = "Tweedledum"
+> t2 = "Tweedledee"
+> print(f"""{t1} and {t2}
+     Agreed to have a battle;
+  For {t1} said {t2}
+     Had spoiled his nice new rattle.""")
+
+$ "Hi Ho! Hi Ho! It's off to work we go!", sang the 7 dwarves.
+ Tweedledum and Tweedledee
+     Agreed to have a battle;
+ For Tweedledum said Tweedledee
+     Had spoiled his nice new rattle.
+
+
+
+
+
+Functions are like sub-programs within the main program which help program design.
+Organising programs into functions supports problem decomposition.
+Functions allow us to create programs with:
+Elegance (by breaking down complexity into simple parts)
+readability (by meaningful function names)
+Traceability (by reducing code duplication)
+Extensibility (by providing building blocks of code)
+
+local variables are not true for lists. A list would behave differently from a variable.
+
+Return - a very powerful technique with functions
+If a function calculates a value or a set of values the return technique is very effective to make the code readable. Return - is the reserved word that appears in the function to declare what is returned as the function's result.
+
+> def cube(x):
+...return x**3
+> for n in range(10):
+...print('The cube of', n, 'is' cube(n))
+
+
+
+days_months = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'January', 'February', 'March', 'April', 'May', 'June', 'July','August', 'September', 'October', 'November', 'December']
+
+def switch(text):
+    if len(text) <= 6:
+        return ''
+    new = ''
+    for ch in text:
+        new = ch + new
+        if ch in 'uTSON':
+            return ''
+    return new
+
+joint = ''
+for items in days:
+    Joint +=(switch(item))
+
+print(joint) 
+
