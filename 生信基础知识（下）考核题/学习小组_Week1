@@ -1,0 +1,21 @@
+给定的碱基序列如下：
+AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC
+要求：统计四种核苷酸数目
+目的：1考查文件读取；2数据类型；3函数运用；4循环
+### 统计四种核苷酸的数目
+
+
+with open('L1.fa','r') as f:
+    for line in f:
+        line = line.rstrip()
+        line = line.upper()
+        l = list(line)
+	a = l.count('A')
+	c = l.count('C')
+
+        for nt in ['A','C','G','T']:
+            a = l.count(nt)
+            a = str(a)
+            print(nt + ':' + a, end='\t')
+        print('\n')
+
